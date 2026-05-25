@@ -1,0 +1,14 @@
+[
+  {
+    "id": "audit_001",
+    "action": "wallet.created",
+    "resourceId": "wallet_001",
+    "createdAt": "2026-05-25T11:00:00Z"
+  },
+  {
+    "id": "audit_002",
+    "action": "transaction.approved",
+    "resourceId": "txn_send_001",
+    "createdAt": "2026-05-25T12:15:00Z"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "wallet_001",
+    "userId": "user_001",
+    "asset": "USDC",
+    "network": "base-sepolia",
+    "depositAddress": "0x2222222222222222222222222222222222222222",
+    "status": "active"
+  }
+]

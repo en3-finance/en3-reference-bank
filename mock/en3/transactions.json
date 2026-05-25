@@ -1,0 +1,19 @@
+[
+  {
+    "id": "txn_deposit_001",
+    "walletId": "wallet_001",
+    "type": "deposit",
+    "asset": "USDC",
+    "amount": "25000.00",
+    "status": "settled"
+  },
+  {
+    "id": "txn_send_001",
+    "walletId": "wallet_001",
+    "type": "withdrawal",
+    "asset": "USDC",
+    "amount": "12500.00",
+    "status": "settled",
+    "policyResult": "approval_required"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "reportId": "recon_001",
+  "date": "2026-05-25",
+  "items": [
+    {
+      "coreBankingAccountId": "account_001",
+      "walletId": "wallet_001",
+      "transactionId": "txn_send_001",
+      "asset": "USDC",
+      "amount": "12500.00",
+      "status": "matched"
+    }
+  ]
+}
