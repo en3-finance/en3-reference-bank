@@ -63,7 +63,7 @@ export function App() {
   );
   const outgoingTransactions = walletTransactions.filter((transaction) => transaction.type === "outgoing_payment");
   const activeTransaction = outgoingTransactions.at(-1) || walletTransactions.at(-1);
-  const pendingApproval = outgoingTransactions.find((transaction) => transaction.status === "approval_required");
+  const pendingApproval = outgoingTransactions.find((transaction) => transaction.status === "requires_approval");
 
   async function submitPayment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -101,7 +101,7 @@ export function App() {
       const response = await fetch(`/en3/transactions/${transactionId}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adminId: "admin_ref_ops" })
+        body: JSON.stringify({ adminId: "sandbank_ops" })
       });
       const payload = await response.json();
       if (!response.ok) {
@@ -139,7 +139,7 @@ export function App() {
       <main className="appShell loadingShell">
         <div className="loadingPanel">
           <RefreshCw aria-hidden="true" className="spin" />
-          <span>{error || "Loading mock reference demo..."}</span>
+          <span>{error || "Loading SandBank demo..."}</span>
         </div>
       </main>
     );
@@ -149,12 +149,13 @@ export function App() {
     <main className="appShell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">En3 Reference Bank</p>
-          <h1>Stablecoin wallet sandbox</h1>
+          <p className="eyebrow">SandBank public demo</p>
+          <h1>Digital-asset account sandbox</h1>
         </div>
         <div className="topActions">
           <span className="badge">Mock data</span>
           <span className="badge">No real funds</span>
+          <span className="badge">Public boundary</span>
           <button className="iconButton" type="button" onClick={resetDemo} disabled={isSubmitting} aria-label="Reset demo">
             <RefreshCw aria-hidden="true" />
           </button>
@@ -163,7 +164,13 @@ export function App() {
 
       {error ? <div className="errorBanner">{error}</div> : null}
 
-      <section className="summaryBand" aria-label="Reference scenario summary">
+      <section className="boundaryBand" aria-label="Public boundary statement">
+        SandBank is a synthetic public demo. It uses mock mode by default or an explicit
+        En3 sandbox base URL; it does not include production custody, real keys, private
+        platform code, real RPC endpoints, partner context, or real customer data.
+      </section>
+
+      <section className="summaryBand" aria-label="SandBank scenario summary">
         <Metric label="Wallet balance" value={`${selectedWallet?.balance || "0.00"} ${selectedWallet?.asset || "USDC"}`} />
         <Metric label="Deposit address" value={shortAddress(selectedWallet?.depositAddress)} mono />
         <Metric label="Policy state" value={policyLabel(activeTransaction)} />
@@ -186,7 +193,7 @@ export function App() {
               </button>
             ))}
           </div>
-          <div className="noticeBlock">Public sample customers only. This demo does not contain real bank data.</div>
+          <div className="noticeBlock">Synthetic SandBank customers only. This demo does not contain real bank data.</div>
         </aside>
 
         <section className="panel walletPanel">
@@ -339,8 +346,8 @@ function Metric({ label, value, mono = false }: { label: string; value: string; 
 
 function policyLabel(transaction?: Transaction) {
   if (!transaction?.policy) return "Deposit lifecycle";
-  if (transaction.status === "approval_required") return "Approval required";
-  if (transaction.status === "rejected") return "Rejected";
+  if (transaction.status === "requires_approval") return "Approval required";
+  if (transaction.status === "failed") return "Failed";
   if (transaction.status === "settled" && transaction.policy.required) return "Approved and settled";
   if (transaction.status === "settled") return "Auto-settled";
   return humanize(transaction.status);
@@ -348,7 +355,7 @@ function policyLabel(transaction?: Transaction) {
 
 function policyReasons(transaction?: Transaction) {
   if (!transaction?.policy) return "Deposit and wallet events are mock sandbox records.";
-  if (transaction.status === "rejected") return transaction.simulation?.result || "Rejected by mock simulation.";
+  if (transaction.status === "failed") return transaction.simulation?.result || "Failed by mock simulation.";
   if (transaction.policy.reasons.length === 0) return "No approval required for this mock payment.";
   return transaction.policy.reasons.map(humanize).join(", ");
 }

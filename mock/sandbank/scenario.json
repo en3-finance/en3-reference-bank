@@ -1,0 +1,103 @@
+{
+  "organization": {
+    "id": "org_sandbank",
+    "name": "SandBank",
+    "mockDataNotice": "Synthetic public demo organization."
+  },
+  "customer": {
+    "id": "user_001",
+    "displayName": "Maya SandBank",
+    "segment": "retail",
+    "country": "AE",
+    "status": "active"
+  },
+  "wallet": {
+    "id": "wallet_001",
+    "userId": "user_001",
+    "asset": "USDC",
+    "network": "sandbox-base-sepolia",
+    "depositAddress": "0x2222222222222222222222222222222222222222",
+    "balance": "12500.00",
+    "status": "active"
+  },
+  "deposit": {
+    "id": "txn_deposit_001",
+    "type": "deposit",
+    "timeline": [
+      { "state": "submitted", "at": "2026-05-25T11:08:00Z", "summary": "Mock stablecoin deposit notification submitted for sandbox address." },
+      { "state": "simulated", "at": "2026-05-25T11:08:30Z", "summary": "Deposit acceptance simulated in mock state." },
+      { "state": "settled", "at": "2026-05-25T11:09:00Z", "summary": "Deposit settled in the SandBank mock lifecycle." }
+    ]
+  },
+  "outgoingPayment": {
+    "id": "txn_send_001",
+    "walletId": "wallet_001",
+    "type": "outgoing_payment",
+    "asset": "USDC",
+    "amount": "12500.00",
+    "destinationAddress": "0x9999999999999999999999999999999999999999",
+    "status": "settled",
+    "simulation": {
+      "status": "passed",
+      "estimatedNetworkFee": "0.42",
+      "result": "Mock simulation passed; no real network call was made."
+    },
+    "policy": {
+      "required": true,
+      "riskLevel": "high",
+      "decision": "review_required",
+      "thresholdAmount": "10000.00",
+      "reasons": ["amount_above_sandbox_threshold", "mock_address_risk_high"]
+    },
+    "approval": {
+      "status": "approved",
+      "adminId": "sandbank_ops",
+      "approvedAt": "2026-05-25T12:15:00Z"
+    },
+    "mockExecution": {
+      "signedAt": "2026-05-25T12:16:00Z",
+      "broadcastAt": "2026-05-25T12:16:20Z",
+      "settledAt": "2026-05-25T12:17:00Z",
+      "mockTxHash": "0xmock000000000000000000000000000000000000000000000000000000000001"
+    },
+    "timeline": [
+      { "state": "submitted", "at": "2026-05-25T12:10:00Z" },
+      { "state": "simulated", "at": "2026-05-25T12:10:03Z" },
+      { "state": "requires_approval", "at": "2026-05-25T12:10:04Z" },
+      { "state": "approved", "at": "2026-05-25T12:15:00Z" },
+      { "state": "signing", "at": "2026-05-25T12:15:45Z" },
+      { "state": "signed", "at": "2026-05-25T12:16:00Z" },
+      { "state": "broadcast", "at": "2026-05-25T12:16:20Z" },
+      { "state": "settled", "at": "2026-05-25T12:17:00Z" }
+    ]
+  },
+  "webhooks": [
+    "wallet.created",
+    "address.created",
+    "transaction.requires_approval",
+    "transaction.settled",
+    "reconciliation.updated"
+  ],
+  "auditEvents": [
+    { "id": "audit_001", "action": "organization.created", "summary": "SandBank organization exists in the mock demo." },
+    { "id": "audit_002", "action": "user.created", "summary": "Synthetic SandBank customer exists in mock core banking." },
+    { "id": "audit_003", "action": "wallet.created", "summary": "Sandbox wallet created for SandBank customer." },
+    { "id": "audit_004", "action": "address.created", "summary": "USDC sandbox deposit address issued." },
+    { "id": "audit_005", "action": "transaction.submitted", "summary": "Outgoing payment submitted to sandbox demo logic." },
+    { "id": "audit_006", "action": "transaction.simulated", "summary": "Outgoing payment simulation completed in sandbox logic." },
+    { "id": "audit_007", "action": "transaction.requires_approval", "summary": "Approval required for high amount and risky mock destination." },
+    { "id": "audit_008", "action": "transaction.approved", "summary": "Mock admin approval recorded." },
+    { "id": "audit_009", "action": "transaction.signing", "summary": "Mock signing workflow started; no custody operation occurred." },
+    { "id": "audit_010", "action": "transaction.signed", "summary": "Mock signed transaction recorded; no private key material exists." },
+    { "id": "audit_011", "action": "transaction.broadcast", "summary": "Mock broadcast recorded; no real network call occurred." },
+    { "id": "audit_012", "action": "transaction.settled", "summary": "Mock outgoing payment settled." },
+    { "id": "audit_013", "action": "reconciliation.updated", "summary": "Mock reconciliation report matched account, wallet, and transaction." },
+    { "id": "audit_014", "action": "audit.event_created", "summary": "Synthetic audit event created for public lifecycle visibility." }
+  ],
+  "reconciliation": {
+    "reportId": "recon_001",
+    "status": "matched",
+    "totalAmount": "12500.00",
+    "asset": "USDC"
+  }
+}

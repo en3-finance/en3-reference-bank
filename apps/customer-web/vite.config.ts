@@ -12,7 +12,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/core/, "")
       },
       "/en3": {
-        target: "http://localhost:4101",
+        target: process.env.EN3_API_BASE_URL || "http://localhost:4101",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/en3/, "")
       }

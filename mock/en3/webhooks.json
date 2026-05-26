@@ -13,20 +13,19 @@
   },
   {
     "id": "wh_002",
-    "type": "deposit.settled",
-    "resourceId": "txn_deposit_001",
+    "type": "address.created",
+    "resourceId": "wallet_001",
     "deliveryStatus": "delivered",
-    "createdAt": "2026-05-25T11:09:02Z",
+    "createdAt": "2026-05-25T11:00:02Z",
     "payload": {
       "walletId": "wallet_001",
-      "amount": "25000.00",
-      "asset": "USDC",
+      "depositAddress": "0x2222222222222222222222222222222222222222",
       "sandbox": true
     }
   },
   {
     "id": "wh_003",
-    "type": "transaction.approval_required",
+    "type": "transaction.requires_approval",
     "resourceId": "txn_send_001",
     "deliveryStatus": "delivered",
     "createdAt": "2026-05-25T12:10:05Z",

@@ -2,7 +2,7 @@
   {
     "id": "account_001",
     "userId": "user_001",
-    "label": "Reference USD Account",
+    "label": "SandBank USD Account",
     "currency": "USD",
     "balance": "50000.00",
     "status": "active",
@@ -11,7 +11,7 @@
   {
     "id": "account_002",
     "userId": "user_002",
-    "label": "Reference Operating Account",
+    "label": "SandBank Operating Account",
     "currency": "USD",
     "balance": "125000.00",
     "status": "active",

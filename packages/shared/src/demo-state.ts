@@ -2,8 +2,6 @@ import type {
   ApprovePaymentInput,
   AuditEvent,
   DemoState,
-  MockCoreAccount,
-  MockCustomer,
   ReconciliationItem,
   SandboxWallet,
   SubmitPaymentInput,
@@ -15,35 +13,35 @@ import type {
 
 const POLICY_THRESHOLD = 10000;
 const DEFAULT_ASSET = "USDC";
-const DEFAULT_NETWORK = "base-sepolia";
+const DEFAULT_NETWORK = "sandbox-base-sepolia";
 
 export function createReferenceDemoState(): DemoState {
   return clone({
     customers: [
       {
         id: "user_001",
-        displayName: "Maya Reference",
+        displayName: "Maya SandBank",
         segment: "retail",
         country: "AE",
         status: "active",
         createdAt: "2026-05-25T09:00:00Z",
-        mockDataNotice: "Public sample customer for En3 reference demo only."
+        mockDataNotice: "Public synthetic SandBank customer for En3 demo only."
       },
       {
         id: "user_002",
-        displayName: "Cedar Foods Trading",
+        displayName: "Harbor Market Trading",
         segment: "sme",
         country: "SA",
         status: "active",
         createdAt: "2026-05-25T09:05:00Z",
-        mockDataNotice: "Public sample customer for En3 reference demo only."
+        mockDataNotice: "Public synthetic SandBank customer for En3 demo only."
       }
     ],
     accounts: [
       {
         id: "account_001",
         userId: "user_001",
-        label: "Reference USD Account",
+        label: "SandBank USD Account",
         currency: "USD",
         balance: "50000.00",
         status: "active",
@@ -52,7 +50,7 @@ export function createReferenceDemoState(): DemoState {
       {
         id: "account_002",
         userId: "user_002",
-        label: "Reference Operating Account",
+        label: "SandBank Operating Account",
         currency: "USD",
         balance: "125000.00",
         status: "active",
@@ -82,9 +80,9 @@ export function createReferenceDemoState(): DemoState {
         status: "settled",
         source: "mock_chain_event",
         timeline: [
-          step("deposit_detected", "2026-05-25T11:08:00Z", "Mock stablecoin deposit detected for sandbox address."),
-          step("credited", "2026-05-25T11:08:30Z", "Wallet balance credited in mock state."),
-          step("settled", "2026-05-25T11:09:00Z", "Deposit settled in the reference lifecycle.")
+          step("submitted", "2026-05-25T11:08:00Z", "Mock stablecoin deposit notification submitted for sandbox address."),
+          step("simulated", "2026-05-25T11:08:30Z", "Deposit acceptance simulated in mock state."),
+          step("settled", "2026-05-25T11:09:00Z", "Deposit settled in the SandBank mock lifecycle.")
         ]
       },
       {
@@ -104,12 +102,13 @@ export function createReferenceDemoState(): DemoState {
         policy: {
           required: true,
           riskLevel: "high",
+          decision: "review_required",
           thresholdAmount: "10000.00",
           reasons: ["amount_above_sandbox_threshold", "mock_address_risk_high"]
         },
         approval: {
           status: "approved",
-          adminId: "admin_ref_ops",
+          adminId: "sandbank_ops",
           approvedAt: "2026-05-25T12:15:00Z",
           note: "Approved in mock operations console for demo."
         },
@@ -121,11 +120,12 @@ export function createReferenceDemoState(): DemoState {
         },
         timeline: [
           step("submitted", "2026-05-25T12:10:00Z", "Customer submitted a mock outgoing stablecoin payment."),
-          step("simulated", "2026-05-25T12:10:03Z", "Transaction simulation completed in sandbox reference logic."),
-          step("approval_required", "2026-05-25T12:10:04Z", "Policy required admin approval for high amount and risky mock destination."),
+          step("simulated", "2026-05-25T12:10:03Z", "Transaction simulation completed in sandbox demo logic."),
+          step("requires_approval", "2026-05-25T12:10:04Z", "Policy required SandBank operations approval for high amount and risky mock destination."),
           step("approved", "2026-05-25T12:15:00Z", "Mock operations admin approved the payment."),
-          step("mock_signed", "2026-05-25T12:16:00Z", "Reference mock signing step recorded; no custody operation occurred."),
-          step("mock_broadcast", "2026-05-25T12:16:20Z", "Reference mock broadcast step recorded; no real network broadcast occurred."),
+          step("signing", "2026-05-25T12:15:45Z", "Mock signing workflow started; no custody operation occurred."),
+          step("signed", "2026-05-25T12:16:00Z", "Mock signed transaction recorded; no private key material exists."),
+          step("broadcast", "2026-05-25T12:16:20Z", "Mock broadcast recorded; no real network broadcast occurred."),
           step("settled", "2026-05-25T12:17:00Z", "Outgoing payment settled in the mock lifecycle.")
         ]
       }
@@ -138,7 +138,7 @@ export function createReferenceDemoState(): DemoState {
       summary: {
         matched: 1,
         pending: 0,
-        unmatched: 0,
+        exception: 0,
         totalAmount: "12500.00",
         asset: DEFAULT_ASSET
       },
@@ -147,12 +147,12 @@ export function createReferenceDemoState(): DemoState {
           coreBankingAccountId: "account_001",
           walletId: "wallet_001",
           transactionId: "txn_send_001",
-          auditEventIds: ["audit_004", "audit_006", "audit_009", "audit_010"],
+          auditEventIds: ["audit_005", "audit_007", "audit_010", "audit_011"],
           asset: DEFAULT_ASSET,
           amount: "12500.00",
           status: "matched",
           settledAt: "2026-05-25T12:17:00Z",
-          mockDataNotice: "Reference reconciliation only; no production ledger."
+          mockDataNotice: "SandBank reconciliation demo only; no production ledger."
         }
       ]
     }
@@ -188,8 +188,10 @@ export function ensureWalletForCustomer(state: DemoState, userId: string): Sandb
   };
 
   state.wallets.push(wallet);
-  addAudit(state, "wallet.created", "mock-bank-core", "wallet", wallet.id, "Sandbox wallet created for mock bank customer.", now);
+  addAudit(state, "wallet.created", "mock-bank-core", "wallet", wallet.id, "Sandbox wallet created for SandBank customer.", now);
+  addAudit(state, "address.created", "mock-en3", "wallet", wallet.id, "USDC sandbox deposit address issued.", now);
   addWebhook(state, "wallet.created", wallet.id, { walletId: wallet.id, userId, sandbox: true }, now);
+  addWebhook(state, "address.created", wallet.id, { walletId: wallet.id, depositAddress: wallet.depositAddress, sandbox: true }, now);
   return wallet;
 }
 
@@ -216,32 +218,33 @@ export function submitOutgoingPayment(state: DemoState, input: SubmitPaymentInpu
     policy: simulatePolicy(amount, input.destinationAddress),
     timeline: [
       step("submitted", now, "Customer submitted a mock outgoing stablecoin payment."),
-      step("simulated", now, "Transaction simulation completed in sandbox reference logic.")
+      step("simulated", now, "Transaction simulation completed in sandbox demo logic.")
     ]
   };
 
   if (amount > parseAmount(wallet.balance)) {
-    transaction.status = "rejected";
+    transaction.status = "failed";
     transaction.simulation = {
       status: "failed",
       estimatedNetworkFee: "0.00",
-      result: "Mock simulation rejected the payment because the sandbox balance is insufficient."
+      result: "Mock simulation failed the payment because the sandbox balance is insufficient."
     };
-    transaction.timeline.push(step("rejected", now, "Payment rejected because the mock wallet balance is insufficient."));
+    transaction.timeline.push(step("failed", now, "Payment failed because the mock wallet balance is insufficient."));
     state.transactions.push(transaction);
-    addAudit(state, "transaction.rejected", "mock-en3", "transaction", transaction.id, "Payment rejected for insufficient mock balance.", now);
-    addWebhook(state, "transaction.rejected", transaction.id, { transactionId: transaction.id, sandbox: true }, now);
+    addAudit(state, "transaction.failed", "mock-en3", "transaction", transaction.id, "Payment failed for insufficient mock balance.", now);
+    addWebhook(state, "transaction.failed", transaction.id, { transactionId: transaction.id, sandbox: true }, now);
     return transaction;
   }
 
   state.transactions.push(transaction);
+  addAudit(state, "transaction.submitted", "mock-en3", "transaction", transaction.id, "Outgoing payment submitted to sandbox demo logic.", now);
   addAudit(state, "transaction.simulated", "mock-en3", "transaction", transaction.id, "Outgoing payment simulation completed in sandbox logic.", now);
 
   if (transaction.policy?.required) {
-    transaction.status = "approval_required";
-    transaction.timeline.push(step("approval_required", now, "Policy required admin approval for mock transaction."));
-    addAudit(state, "policy.approval_required", "mock-en3", "transaction", transaction.id, "Approval required by sandbox policy.", now);
-    addWebhook(state, "transaction.approval_required", transaction.id, {
+    transaction.status = "requires_approval";
+    transaction.timeline.push(step("requires_approval", now, "Policy required SandBank operations approval for mock transaction."));
+    addAudit(state, "transaction.requires_approval", "mock-en3", "transaction", transaction.id, "Approval required by sandbox policy.", now);
+    addWebhook(state, "transaction.requires_approval", transaction.id, {
       transactionId: transaction.id,
       reasons: transaction.policy.reasons,
       sandbox: true
@@ -257,7 +260,7 @@ export function approveOutgoingPayment(state: DemoState, input: ApprovePaymentIn
   if (!transaction) {
     throw new Error(`Mock transaction ${input.transactionId} was not found.`);
   }
-  if (transaction.status !== "approval_required") {
+  if (transaction.status !== "requires_approval") {
     throw new Error(`Mock transaction ${transaction.id} is not awaiting approval.`);
   }
 
@@ -265,7 +268,7 @@ export function approveOutgoingPayment(state: DemoState, input: ApprovePaymentIn
   transaction.status = "approved";
   transaction.approval = {
     status: "approved",
-    adminId: input.adminId || "admin_ref_ops",
+    adminId: input.adminId || "sandbank_ops",
     approvedAt: now,
     note: "Approved in mock operations console for demo."
   };
@@ -286,13 +289,13 @@ export function getScenarioSteps(state: DemoState): string[] {
     wallet ? "wallet_created" : "",
     wallet?.depositAddress ? "deposit_address_issued" : "",
     deposit ? "stablecoin_deposit_detected" : "",
-    deposit?.timeline.some((item) => item.state === "credited") ? "balance_credited" : "",
+    deposit?.timeline.some((item) => item.state === "simulated") ? "deposit_simulated" : "",
     outgoing ? "outgoing_payment_submitted" : "",
     outgoing?.simulation ? "transaction_simulated" : "",
     outgoing?.policy?.required ? "policy_requires_approval" : "",
     outgoing?.approval ? "admin_approval_recorded" : "",
-    outgoing?.mockExecution?.signedAt ? "transaction_mock_signed" : "",
-    outgoing?.mockExecution?.broadcastAt ? "transaction_mock_broadcast" : "",
+    outgoing?.mockExecution?.signedAt ? "transaction_signed" : "",
+    outgoing?.mockExecution?.broadcastAt ? "transaction_broadcast" : "",
     outgoing?.status === "settled" ? "transaction_settled" : "",
     state.reconciliationReport.items.length > 0 ? "reconciliation_updated" : "",
     auditActions.size > 0 && webhookTypes.size > 0 ? "audit_and_webhooks_recorded" : ""
@@ -321,13 +324,15 @@ function settleTransaction(state: DemoState, transaction: Transaction, actor: st
     mockTxHash: `0xmock${transaction.id.replace(/\D/g, "").padStart(60, "0")}`
   };
   transaction.timeline.push(
-    step("mock_signed", at, "Reference mock signing step recorded; no custody operation occurred."),
-    step("mock_broadcast", at, "Reference mock broadcast step recorded; no real network broadcast occurred."),
+    step("signing", at, "Mock signing workflow started; no custody operation occurred."),
+    step("signed", at, "Mock signed transaction recorded; no private key material exists."),
+    step("broadcast", at, "Mock broadcast recorded; no real network broadcast occurred."),
     step("settled", at, "Outgoing payment settled in the mock lifecycle.")
   );
 
-  addAudit(state, "transaction.mock_signed", "mock-en3", "transaction", transaction.id, "Mock signing recorded; no custody operation occurred.", at);
-  addAudit(state, "transaction.mock_broadcast", "mock-en3", "transaction", transaction.id, "Mock broadcast recorded; no real network call occurred.", at);
+  addAudit(state, "transaction.signing", "mock-en3", "transaction", transaction.id, "Mock signing workflow started; no custody operation occurred.", at);
+  addAudit(state, "transaction.signed", "mock-en3", "transaction", transaction.id, "Mock signed transaction recorded; no private key material exists.", at);
+  addAudit(state, "transaction.broadcast", "mock-en3", "transaction", transaction.id, "Mock broadcast recorded; no real network call occurred.", at);
   const settledAudit = addAudit(state, "transaction.settled", "mock-en3", "transaction", transaction.id, "Mock outgoing payment settled.", at);
   addWebhook(state, "transaction.settled", transaction.id, {
     transactionId: transaction.id,
@@ -352,6 +357,7 @@ function simulatePolicy(amount: number, destinationAddress: string) {
   return {
     required: reasons.length > 0,
     riskLevel: reasons.includes("mock_address_risk_high") ? "high" as const : reasons.length > 0 ? "medium" as const : "low" as const,
+    decision: reasons.length > 0 ? "review_required" as const : "allow" as const,
     thresholdAmount: formatAmount(POLICY_THRESHOLD),
     reasons
   };
@@ -386,7 +392,7 @@ function upsertReconciliationItem(state: DemoState, transaction: Transaction, au
     amount: transaction.amount,
     status: "matched",
     settledAt: at,
-    mockDataNotice: "Reference reconciliation only; no production ledger."
+    mockDataNotice: "SandBank reconciliation demo only; no production ledger."
   };
 
   if (existing) {
@@ -398,7 +404,7 @@ function upsertReconciliationItem(state: DemoState, transaction: Transaction, au
   state.reconciliationReport.summary = {
     matched: state.reconciliationReport.items.filter((entry) => entry.status === "matched").length,
     pending: state.reconciliationReport.items.filter((entry) => entry.status === "pending").length,
-    unmatched: state.reconciliationReport.items.filter((entry) => entry.status === "unmatched").length,
+    exception: state.reconciliationReport.items.filter((entry) => entry.status === "exception").length,
     totalAmount: formatAmount(state.reconciliationReport.items.reduce((sum, entry) => sum + parseAmount(entry.amount), 0)),
     asset: DEFAULT_ASSET
   };
@@ -447,24 +453,28 @@ function addWebhook(
 
 function referenceAuditEvents(): AuditEvent[] {
   return [
-    audit("audit_001", "wallet.created", "mock-bank-core", "wallet", "wallet_001", "Sandbox wallet created for mock bank customer.", "2026-05-25T11:00:00Z"),
-    audit("audit_002", "deposit.detected", "mock-en3", "transaction", "txn_deposit_001", "Mock stablecoin deposit detected.", "2026-05-25T11:08:00Z"),
-    audit("audit_003", "wallet.balance_credited", "mock-en3", "wallet", "wallet_001", "Wallet credited with mock USDC deposit.", "2026-05-25T11:08:30Z"),
-    audit("audit_004", "transaction.simulated", "mock-en3", "transaction", "txn_send_001", "Outgoing payment simulation completed in sandbox logic.", "2026-05-25T12:10:03Z"),
-    audit("audit_005", "policy.approval_required", "mock-en3", "transaction", "txn_send_001", "Approval required for high amount and risky mock destination.", "2026-05-25T12:10:04Z"),
-    audit("audit_006", "transaction.approved", "admin_ref_ops", "transaction", "txn_send_001", "Mock admin approval recorded.", "2026-05-25T12:15:00Z"),
-    audit("audit_007", "transaction.mock_signed", "mock-en3", "transaction", "txn_send_001", "Mock signing recorded; no custody operation occurred.", "2026-05-25T12:16:00Z"),
-    audit("audit_008", "transaction.mock_broadcast", "mock-en3", "transaction", "txn_send_001", "Mock broadcast recorded; no real network call occurred.", "2026-05-25T12:16:20Z"),
-    audit("audit_009", "transaction.settled", "mock-en3", "transaction", "txn_send_001", "Mock outgoing payment settled.", "2026-05-25T12:17:00Z"),
-    audit("audit_010", "reconciliation.updated", "mock-en3", "reconciliation_report", "recon_001", "Mock reconciliation report matched bank account, wallet, and transaction.", "2026-05-25T12:18:00Z")
+    audit("audit_001", "organization.created", "mock-bank-core", "organization", "org_sandbank", "SandBank organization exists in the mock demo.", "2026-05-25T09:00:00Z"),
+    audit("audit_002", "user.created", "mock-bank-core", "user", "user_001", "Synthetic SandBank customer exists in mock core banking.", "2026-05-25T09:00:01Z"),
+    audit("audit_003", "wallet.created", "mock-bank-core", "wallet", "wallet_001", "Sandbox wallet created for SandBank customer.", "2026-05-25T11:00:00Z"),
+    audit("audit_004", "address.created", "mock-en3", "wallet", "wallet_001", "USDC sandbox deposit address issued.", "2026-05-25T11:00:01Z"),
+    audit("audit_004", "transaction.submitted", "mock-en3", "transaction", "txn_send_001", "Outgoing payment submitted to sandbox demo logic.", "2026-05-25T12:10:00Z"),
+    audit("audit_005", "transaction.simulated", "mock-en3", "transaction", "txn_send_001", "Outgoing payment simulation completed in sandbox logic.", "2026-05-25T12:10:03Z"),
+    audit("audit_006", "transaction.requires_approval", "mock-en3", "transaction", "txn_send_001", "Approval required for high amount and risky mock destination.", "2026-05-25T12:10:04Z"),
+    audit("audit_007", "transaction.approved", "sandbank_ops", "transaction", "txn_send_001", "Mock admin approval recorded.", "2026-05-25T12:15:00Z"),
+    audit("audit_008", "transaction.signing", "mock-en3", "transaction", "txn_send_001", "Mock signing workflow started; no custody operation occurred.", "2026-05-25T12:15:45Z"),
+    audit("audit_009", "transaction.signed", "mock-en3", "transaction", "txn_send_001", "Mock signed transaction recorded; no private key material exists.", "2026-05-25T12:16:00Z"),
+    audit("audit_012", "transaction.broadcast", "mock-en3", "transaction", "txn_send_001", "Mock broadcast recorded; no real network call occurred.", "2026-05-25T12:16:20Z"),
+    audit("audit_010", "transaction.settled", "mock-en3", "transaction", "txn_send_001", "Mock outgoing payment settled.", "2026-05-25T12:17:00Z"),
+    audit("audit_011", "reconciliation.updated", "mock-en3", "reconciliation_report", "recon_001", "Mock reconciliation report matched account, wallet, and transaction.", "2026-05-25T12:18:00Z"),
+    audit("audit_013", "audit.event_created", "mock-en3", "audit_event", "audit_010", "Synthetic audit event created for public lifecycle visibility.", "2026-05-25T12:18:01Z")
   ];
 }
 
 function referenceWebhookEvents(): WebhookEvent[] {
   return [
     webhook("wh_001", "wallet.created", "wallet_001", "2026-05-25T11:00:01Z", { walletId: "wallet_001", userId: "user_001", sandbox: true }),
-    webhook("wh_002", "deposit.settled", "txn_deposit_001", "2026-05-25T11:09:02Z", { walletId: "wallet_001", amount: "25000.00", asset: DEFAULT_ASSET, sandbox: true }),
-    webhook("wh_003", "transaction.approval_required", "txn_send_001", "2026-05-25T12:10:05Z", { transactionId: "txn_send_001", reasons: ["amount_above_sandbox_threshold", "mock_address_risk_high"], sandbox: true }),
+    webhook("wh_002", "address.created", "wallet_001", "2026-05-25T11:00:02Z", { walletId: "wallet_001", depositAddress: "0x2222222222222222222222222222222222222222", sandbox: true }),
+    webhook("wh_003", "transaction.requires_approval", "txn_send_001", "2026-05-25T12:10:05Z", { transactionId: "txn_send_001", reasons: ["amount_above_sandbox_threshold", "mock_address_risk_high"], sandbox: true }),
     webhook("wh_004", "transaction.settled", "txn_send_001", "2026-05-25T12:17:02Z", { transactionId: "txn_send_001", mockTxHash: "0xmock000000000000000000000000000000000000000000000000000000000001", sandbox: true }),
     webhook("wh_005", "reconciliation.updated", "recon_001", "2026-05-25T12:18:01Z", { reportId: "recon_001", matchedItems: 1, sandbox: true })
   ];

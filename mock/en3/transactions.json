@@ -9,19 +9,19 @@
     "source": "mock_chain_event",
     "timeline": [
       {
-        "state": "deposit_detected",
+        "state": "submitted",
         "at": "2026-05-25T11:08:00Z",
-        "summary": "Mock stablecoin deposit detected for sandbox address."
+        "summary": "Mock stablecoin deposit notification submitted for sandbox address."
       },
       {
-        "state": "credited",
+        "state": "simulated",
         "at": "2026-05-25T11:08:30Z",
-        "summary": "Wallet balance credited in mock state."
+        "summary": "Deposit acceptance simulated in mock state."
       },
       {
         "state": "settled",
         "at": "2026-05-25T11:09:00Z",
-        "summary": "Deposit settled in the reference lifecycle."
+        "summary": "Deposit settled in the SandBank mock lifecycle."
       }
     ]
   },
@@ -42,6 +42,7 @@
     "policy": {
       "required": true,
       "riskLevel": "high",
+      "decision": "review_required",
       "thresholdAmount": "10000.00",
       "reasons": [
         "amount_above_sandbox_threshold",
@@ -50,7 +51,7 @@
     },
     "approval": {
       "status": "approved",
-      "adminId": "admin_ref_ops",
+      "adminId": "sandbank_ops",
       "approvedAt": "2026-05-25T12:15:00Z",
       "note": "Approved in mock operations console for demo."
     },
@@ -69,12 +70,12 @@
       {
         "state": "simulated",
         "at": "2026-05-25T12:10:03Z",
-        "summary": "Transaction simulation completed in sandbox reference logic."
+        "summary": "Transaction simulation completed in sandbox demo logic."
       },
       {
-        "state": "approval_required",
+        "state": "requires_approval",
         "at": "2026-05-25T12:10:04Z",
-        "summary": "Policy required admin approval for high amount and risky mock destination."
+        "summary": "Policy required SandBank operations approval for high amount and risky mock destination."
       },
       {
         "state": "approved",
@@ -82,14 +83,19 @@
         "summary": "Mock operations admin approved the payment."
       },
       {
-        "state": "mock_signed",
-        "at": "2026-05-25T12:16:00Z",
-        "summary": "Reference mock signing step recorded; no custody operation occurred."
+        "state": "signing",
+        "at": "2026-05-25T12:15:45Z",
+        "summary": "Mock signing workflow started; no custody operation occurred."
       },
       {
-        "state": "mock_broadcast",
+        "state": "signed",
+        "at": "2026-05-25T12:16:00Z",
+        "summary": "Mock signed transaction recorded; no private key material exists."
+      },
+      {
+        "state": "broadcast",
         "at": "2026-05-25T12:16:20Z",
-        "summary": "Reference mock broadcast step recorded; no real network broadcast occurred."
+        "summary": "Mock broadcast recorded; no real network broadcast occurred."
       },
       {
         "state": "settled",

@@ -14,7 +14,7 @@
 
 A partner, fintech product lead, or diligence reviewer can open the reference demo and
 understand how an existing mock bank customer receives an En3 wallet, a deposit address,
-a stablecoin deposit, a credited balance, an outgoing payment, settlement, reconciliation,
+a stablecoin deposit, an updated balance, an outgoing payment, settlement, reconciliation,
 audit events, and webhooks.
 
 **Why this priority**: This is the core 5-minute narrative and the minimum viable public
@@ -29,7 +29,7 @@ without entering real credentials or using real funds.
 1. **Given** a mock bank customer exists, **When** a reviewer opens the demo, **Then** the
    customer, linked wallet, deposit address, balance, and lifecycle timeline are visible.
 2. **Given** a mock deposit event exists, **When** the reviewer inspects the wallet state,
-   **Then** the balance reflects the credited stablecoin amount and the audit timeline
+   **Then** the balance reflects the mock stablecoin amount and the audit timeline
    includes the deposit event.
 3. **Given** the outgoing payment has settled, **When** the reviewer opens reconciliation,
    **Then** the report links the core-banking account, wallet, transaction, and audit events.
@@ -88,11 +88,11 @@ commands.
   wallet is created.
 - If a wallet already exists for a customer, the demo reuses the active sandbox wallet
   instead of creating duplicate wallets.
-- If a payment amount exceeds the available mock balance, the transaction is rejected with
+- If a payment amount exceeds the available mock balance, the transaction fails with
   an insufficient-balance state.
 - If a payment amount is high or the destination is marked risky, the transaction remains
   blocked until a mock admin approval is recorded.
-- If a transaction has not settled, reconciliation shows it as pending or unmatched.
+- If a transaction has not settled, reconciliation shows it as pending or exception.
 - If mock data is reset, the demo returns to the documented reference scenario.
 
 ## Requirements *(mandatory)*

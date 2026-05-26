@@ -1,22 +1,56 @@
 export type CustomerStatus = "active" | "inactive";
 export type AccountStatus = "active" | "frozen" | "closed";
-export type WalletStatus = "active" | "pending" | "closed";
+export type WalletStatus = "created" | "address_issued" | "active" | "suspended" | "closed";
 export type TransactionType = "deposit" | "outgoing_payment";
 export type TransactionStatus =
-  | "deposit_detected"
-  | "credited"
   | "submitted"
   | "simulated"
-  | "approval_required"
+  | "requires_approval"
   | "approved"
-  | "mock_signed"
-  | "mock_broadcast"
+  | "signing"
+  | "signed"
+  | "broadcast"
   | "settled"
-  | "rejected";
+  | "failed"
+  | "cancelled";
 export type RiskLevel = "low" | "medium" | "high";
-export type AuditActor = "customer" | "admin_ref_ops" | "mock-bank-core" | "mock-en3" | string;
-export type WebhookDeliveryStatus = "queued" | "delivered" | "failed";
-export type ReconciliationStatus = "matched" | "pending" | "unmatched";
+export type RiskDecision = "allow" | "review_required" | "block";
+export type ApprovalStatus = "not_required" | "pending" | "approved" | "rejected" | "expired";
+export type AuditActor = "customer" | "sandbank_ops" | "mock-bank-core" | "mock-en3" | string;
+export type WebhookDeliveryStatus = "pending" | "delivered" | "failed" | "retrying";
+export type ReconciliationStatus = "pending" | "matched" | "exception" | "resolved";
+
+export const CANONICAL_WALLET_STATUSES = ["created", "address_issued", "active", "suspended", "closed"] as const;
+export const CANONICAL_TRANSACTION_STATUSES = [
+  "submitted",
+  "simulated",
+  "requires_approval",
+  "approved",
+  "signing",
+  "signed",
+  "broadcast",
+  "settled",
+  "failed",
+  "cancelled"
+] as const;
+export const CANONICAL_PUBLIC_EVENTS = [
+  "organization.created",
+  "user.created",
+  "wallet.created",
+  "address.created",
+  "policy.created",
+  "transaction.submitted",
+  "transaction.simulated",
+  "transaction.requires_approval",
+  "transaction.approved",
+  "transaction.signing",
+  "transaction.signed",
+  "transaction.broadcast",
+  "transaction.settled",
+  "transaction.failed",
+  "audit.event_created",
+  "reconciliation.updated"
+] as const;
 
 export interface MockCustomer {
   id: string;
@@ -65,12 +99,13 @@ export interface TransactionSimulation {
 export interface PolicyDecision {
   required: boolean;
   riskLevel: RiskLevel;
+  decision: RiskDecision;
   thresholdAmount: string;
   reasons: string[];
 }
 
 export interface TransactionApproval {
-  status: "approved";
+  status: ApprovalStatus;
   adminId: string;
   approvedAt: string;
   note: string;
@@ -137,7 +172,7 @@ export interface ReconciliationReport {
   summary: {
     matched: number;
     pending: number;
-    unmatched: number;
+    exception: number;
     totalAmount: string;
     asset: "USDC" | string;
   };

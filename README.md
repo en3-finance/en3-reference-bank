@@ -1,39 +1,38 @@
-# En3 Reference Bank
+# SandBank En3 Demo
 
-Status: public reference / sandbox artifact. This repository demonstrates how a bank or
-fintech could use En3-style sandbox APIs to launch a stablecoin wallet product. It is not
-production banking, custody, signing, ledger, treasury, compliance, or deployment
-infrastructure.
+Status: public mock / sandbox artifact. SandBank is a synthetic end-to-end demo showing how a bank or fintech could use En3-style sandbox APIs to launch a stablecoin wallet product.
 
-All customers, accounts, wallets, addresses, transactions, audit events, webhook events,
-and reconciliation records are mock data. No real funds move.
+Public boundary: this repository does not contain private platform code, production custody, real keys, real RPC URLs, private internals, real customer data, partner context, fundraising or M&A context, ADI/grant context, or strategic acquirer claims. All customers, accounts, wallets, addresses, transactions, audit events, webhook events, and reconciliation records are synthetic.
 
 ## What This Repo Demonstrates
 
-1. A bank customer exists in mock core banking.
-2. An En3 sandbox wallet is created or displayed for the customer.
+1. A synthetic SandBank customer exists in mock core banking.
+2. A sandbox wallet is created or displayed for the customer.
 3. A sandbox deposit address is issued.
 4. A stablecoin deposit is detected in mock form.
-5. The user balance is credited in mock state.
+5. The wallet balance is updated in mock state.
 6. An outgoing payment is submitted.
 7. The transaction is simulated.
 8. Policy requires approval for a high amount or risky mock destination.
 9. Admin approval is recorded.
-10. The transaction is mock-signed and mock-broadcast.
-11. The transaction settles in the reference lifecycle.
+10. The transaction moves through mock signing and mock broadcast states.
+11. The transaction settles in the mock lifecycle.
 12. Reconciliation links the core account, wallet, transaction, and audit events.
 13. Audit events record the lifecycle.
 14. Webhook events show outbound notifications.
 
-## Run Locally
-
-Prerequisites:
-
-- Node.js 20+
-- pnpm 9+
+## One-Command Demo
 
 ```bash
 pnpm install
+pnpm sandbank:demo
+```
+
+The CLI prints the SandBank customer, wallet status, deposit address, transaction simulation, approval requirement, approval action, settlement, reconciliation report, audit timeline, and webhook timeline.
+
+## Web App
+
+```bash
 pnpm dev
 ```
 
@@ -53,33 +52,35 @@ curl http://localhost:4101/demo/state
 curl http://localhost:4101/reconciliation/report
 ```
 
-## Architecture
+## Live Sandbox Mode
 
-```mermaid
-flowchart LR
-  reviewer[Reviewer browser] --> web[Customer web reference app]
-  web --> core[Mock core banking API]
-  web --> en3[Mock En3 sandbox API]
-  core --> coreData[(mock/core-banking)]
-  en3 --> shared[Shared lifecycle state machine]
-  en3 --> walletData[(mock/en3)]
-  en3 --> recon[(mock/reconciliation)]
-  shared --> policy[Mock policy and risk decision]
-  shared --> audit[Audit events]
-  shared --> hooks[Webhook events]
+Set `EN3_API_BASE_URL` to point the CLI or web proxy at a live sandbox-compatible API:
+
+```bash
+EN3_API_BASE_URL=https://sandbox.example.invalid pnpm sandbank:demo
+EN3_API_BASE_URL=https://sandbox.example.invalid pnpm dev
 ```
 
-## 5-Minute Demo Script
+The live path uses HTTP JSON only and imports no private platform code.
 
-1. Open the web demo and select `Maya Reference`.
-2. Show the active sandbox wallet, USDC balance, and deposit address.
-3. Open the timeline and point out the mock deposit detection and credit.
-4. Submit the default `11000.00 USDC` outgoing payment to the risky mock destination.
-5. Show the simulation result and approval requirement.
-6. Click `Approve mock transaction`.
-7. Show mock signing, mock broadcast, settlement, reconciliation, audit events, and
-   webhooks.
-8. Use the reset button to return to the seeded reference scenario.
+## Validation
+
+```bash
+pnpm test
+pnpm build
+pnpm validate:forbidden
+pnpm validate:secrets
+```
+
+Deprecated internal event names are excluded from runtime public artifacts.
+
+## Documentation
+
+- [SandBank demo script](docs/sandbank-demo-script.md)
+- [SandBank architecture](docs/sandbank-architecture.md)
+- [Local runbook](docs/local-runbook.md)
+- [Live sandbox mode](docs/live-sandbox-mode.md)
+- [Spec Kit plan](specs/001-sandbank-demo/plan.md)
 
 ## Project Layout
 
@@ -87,34 +88,19 @@ flowchart LR
 apps/customer-web      Vite React demo UI
 apps/mock-bank-core    Local mock core-banking API
 apps/mock-en3-api      Local mock En3 sandbox API
-packages/shared        Scenario state machine, types, and tests
-mock/                  Public seed data
-docs/                  Architecture and scenario walkthroughs
+packages/shared        Scenario state machine, statuses/events, types, and tests
+mock/sandbank          Public synthetic SandBank scenario
+mock/                  Supporting public mock seed data
+scripts/               SandBank demo runners
+docs/                  Architecture and runbooks
 specs/                 Spec Kit artifacts
 ```
 
-## Documentation
-
-- [Architecture](docs/architecture.md)
-- [Demo script](docs/demo-script.md)
-- [Scenario 01: create user wallet](docs/scenarios/01-create-user-wallet.md)
-- [Scenario 02: deposit stablecoin](docs/scenarios/02-deposit-stablecoin.md)
-- [Scenario 03: send payment with policy](docs/scenarios/03-send-payment-with-policy.md)
-- [Scenario 04: approve high-risk transaction](docs/scenarios/04-approve-high-risk-transaction.md)
-- [Scenario 05: reconcile payment](docs/scenarios/05-reconcile-payment.md)
-- [Spec Kit plan](specs/001-reference-bank-stablecoin-wallet-demo/plan.md)
-
-## Related En3 Repositories
+## Related Public En3 Repositories
 
 - [en3-api-spec](https://github.com/en3-finance/en3-api-spec)
 - [en3-wallet-sdk](https://github.com/en3-finance/en3-wallet-sdk)
-- [en3-admin-console](https://github.com/en3-finance/en3-admin-console)
-- [en3-docs](https://github.com/en3-finance/en3-docs)
 
 ## Boundaries
 
-This repository intentionally excludes production cryptography, MPC/TSS, signing
-orchestration, policy enforcement, risk logic, ledger infrastructure, treasury execution,
-customer deployments, private endpoints, real RPC URLs, vendor integrations, and compliance
-certifications. Any production deployment options described by En3 are outside this public
-reference implementation unless explicitly implemented in code.
+This repository intentionally excludes production cryptography, MPC/TSS, signing orchestration, policy enforcement, risk logic, ledger infrastructure, treasury execution, customer deployments, private endpoints, real RPC URLs, vendor integrations, and compliance certifications. Any production deployment options described by En3 are outside this public demo unless explicitly implemented in this repository.

@@ -37,7 +37,7 @@ curl -X POST http://localhost:4101/demo/reset
 
 1. Select the reference customer.
 2. Review the active sandbox wallet and mock deposit address.
-3. Inspect the credited mock USDC deposit.
+3. Inspect the mock USDC deposit lifecycle.
 4. Submit a high-amount outgoing payment or replay the seeded payment.
 5. Review the simulated policy result and approval requirement.
 6. Approve the transaction as a mock operations admin.

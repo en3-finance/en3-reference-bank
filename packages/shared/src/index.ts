@@ -23,3 +23,9 @@ export type {
   TransactionStatus,
   WebhookEvent
 } from "./types";
+
+export {
+  CANONICAL_PUBLIC_EVENTS,
+  CANONICAL_TRANSACTION_STATUSES,
+  CANONICAL_WALLET_STATUSES
+} from "./types";

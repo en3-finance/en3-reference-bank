@@ -1,33 +1,51 @@
 [
   {
     "id": "audit_001",
+    "action": "organization.created",
+    "actor": "mock-bank-core",
+    "resourceType": "organization",
+    "resourceId": "org_sandbank",
+    "summary": "SandBank organization exists in the mock demo.",
+    "createdAt": "2026-05-25T09:00:00Z"
+  },
+  {
+    "id": "audit_002",
+    "action": "user.created",
+    "actor": "mock-bank-core",
+    "resourceType": "user",
+    "resourceId": "user_001",
+    "summary": "Synthetic SandBank customer exists in mock core banking.",
+    "createdAt": "2026-05-25T09:00:01Z"
+  },
+  {
+    "id": "audit_003",
     "action": "wallet.created",
     "actor": "mock-bank-core",
     "resourceType": "wallet",
     "resourceId": "wallet_001",
-    "summary": "Sandbox wallet created for mock bank customer.",
+    "summary": "Sandbox wallet created for SandBank customer.",
     "createdAt": "2026-05-25T11:00:00Z"
   },
   {
-    "id": "audit_002",
-    "action": "deposit.detected",
-    "actor": "mock-en3",
-    "resourceType": "transaction",
-    "resourceId": "txn_deposit_001",
-    "summary": "Mock stablecoin deposit detected.",
-    "createdAt": "2026-05-25T11:08:00Z"
-  },
-  {
-    "id": "audit_003",
-    "action": "wallet.balance_credited",
+    "id": "audit_004",
+    "action": "address.created",
     "actor": "mock-en3",
     "resourceType": "wallet",
     "resourceId": "wallet_001",
-    "summary": "Wallet credited with mock USDC deposit.",
-    "createdAt": "2026-05-25T11:08:30Z"
+    "summary": "USDC sandbox deposit address issued.",
+    "createdAt": "2026-05-25T11:00:01Z"
   },
   {
-    "id": "audit_004",
+    "id": "audit_005",
+    "action": "transaction.submitted",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Outgoing payment submitted to sandbox demo logic.",
+    "createdAt": "2026-05-25T12:10:00Z"
+  },
+  {
+    "id": "audit_006",
     "action": "transaction.simulated",
     "actor": "mock-en3",
     "resourceType": "transaction",
@@ -36,8 +54,8 @@
     "createdAt": "2026-05-25T12:10:03Z"
   },
   {
-    "id": "audit_005",
-    "action": "policy.approval_required",
+    "id": "audit_007",
+    "action": "transaction.requires_approval",
     "actor": "mock-en3",
     "resourceType": "transaction",
     "resourceId": "txn_send_001",
@@ -45,26 +63,35 @@
     "createdAt": "2026-05-25T12:10:04Z"
   },
   {
-    "id": "audit_006",
+    "id": "audit_008",
     "action": "transaction.approved",
-    "actor": "admin_ref_ops",
+    "actor": "sandbank_ops",
     "resourceType": "transaction",
     "resourceId": "txn_send_001",
     "summary": "Mock admin approval recorded.",
     "createdAt": "2026-05-25T12:15:00Z"
   },
   {
-    "id": "audit_007",
-    "action": "transaction.mock_signed",
+    "id": "audit_009",
+    "action": "transaction.signing",
     "actor": "mock-en3",
     "resourceType": "transaction",
     "resourceId": "txn_send_001",
-    "summary": "Mock signing recorded; no custody operation occurred.",
+    "summary": "Mock signing workflow started; no custody operation occurred.",
+    "createdAt": "2026-05-25T12:15:45Z"
+  },
+  {
+    "id": "audit_010",
+    "action": "transaction.signed",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Mock signed transaction recorded; no private key material exists.",
     "createdAt": "2026-05-25T12:16:00Z"
   },
   {
-    "id": "audit_008",
-    "action": "transaction.mock_broadcast",
+    "id": "audit_011",
+    "action": "transaction.broadcast",
     "actor": "mock-en3",
     "resourceType": "transaction",
     "resourceId": "txn_send_001",
@@ -72,7 +99,7 @@
     "createdAt": "2026-05-25T12:16:20Z"
   },
   {
-    "id": "audit_009",
+    "id": "audit_012",
     "action": "transaction.settled",
     "actor": "mock-en3",
     "resourceType": "transaction",
@@ -81,12 +108,21 @@
     "createdAt": "2026-05-25T12:17:00Z"
   },
   {
-    "id": "audit_010",
+    "id": "audit_013",
     "action": "reconciliation.updated",
     "actor": "mock-en3",
     "resourceType": "reconciliation_report",
     "resourceId": "recon_001",
-    "summary": "Mock reconciliation report matched bank account, wallet, and transaction.",
+    "summary": "Mock reconciliation report matched account, wallet, and transaction.",
     "createdAt": "2026-05-25T12:18:00Z"
+  },
+  {
+    "id": "audit_014",
+    "action": "audit.event_created",
+    "actor": "mock-en3",
+    "resourceType": "audit_event",
+    "resourceId": "audit_012",
+    "summary": "Synthetic audit event created for public lifecycle visibility.",
+    "createdAt": "2026-05-25T12:18:01Z"
   }
 ]

@@ -7,6 +7,9 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently -n core,en3,web -c blue,green,magenta \"pnpm --filter @en3-reference-bank/mock-bank-core dev\" \"pnpm --filter @en3-reference-bank/mock-en3-api dev\" \"pnpm --filter @en3-reference-bank/customer-web dev\"",
+    "sandbank:demo": "node scripts/run-sandbank-demo.mjs",
+    "validate:forbidden": "sh -c '! rg -n \"audit\\.event_recorded|ledger\\.entry_created|reconciliation\\.entry_created\" apps packages mock'",
+    "validate:secrets": "sh -c '! rg -n \"(ghp_|github_pat_|sk-[A-Za-z0-9]{20,}|-----BEGIN (RSA |EC |OPENSSH |)PRIVATE KEY-----|(?i)(api[_-]?key|secret|token|password)\\s*[:=])\" --glob \"!pnpm-lock.yaml\" --glob \"!CODEX_REPORT.md\" --glob \"!package.json\"'",
     "build": "pnpm -r build",
     "test": "pnpm --filter @en3-reference-bank/shared test",
     "typecheck": "pnpm -r typecheck"

@@ -4,7 +4,7 @@
   "summary": {
     "matched": 1,
     "pending": 0,
-    "unmatched": 0,
+    "exception": 0,
     "totalAmount": "12500.00",
     "asset": "USDC"
   },
@@ -14,16 +14,16 @@
       "walletId": "wallet_001",
       "transactionId": "txn_send_001",
       "auditEventIds": [
-        "audit_004",
-        "audit_006",
-        "audit_009",
-        "audit_010"
+        "audit_005",
+        "audit_007",
+        "audit_010",
+        "audit_011"
       ],
       "asset": "USDC",
       "amount": "12500.00",
       "status": "matched",
       "settledAt": "2026-05-25T12:17:00Z",
-      "mockDataNotice": "Reference reconciliation only; no production ledger."
+      "mockDataNotice": "SandBank reconciliation demo only; no production ledger."
     }
   ]
 }

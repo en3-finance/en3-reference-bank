@@ -28,8 +28,8 @@ Relationships: Referenced by reconciliation entries.
 - `asset`: stablecoin asset such as `USDC`
 - `network`: sandbox network label
 - `depositAddress`: mock deposit address
-- `balance`: credited mock wallet balance
-- `status`: `active`, `pending`, or `closed`
+- `balance`: mock wallet balance
+- `status`: `created`, `address_issued`, `active`, `suspended`, or `closed`
 
 State rules: A wallet can receive deposits and outgoing payments only while `active`.
 
@@ -50,18 +50,19 @@ State rules: A wallet can receive deposits and outgoing payments only while `act
 State rules:
 
 ```text
-draft -> simulated -> approval_required -> approved -> mock_signed -> mock_broadcast -> settled
-draft -> simulated -> rejected
-deposit_detected -> credited -> settled
+submitted -> simulated -> requires_approval -> approved -> signing -> signed -> broadcast -> settled
+submitted -> simulated -> failed
+submitted -> simulated -> settled
 ```
 
 Outgoing payments above `10000.00` or to a destination with risky mock address-risk state
-must enter `approval_required`.
+must enter `requires_approval`.
 
 ## PolicyDecision
 
 - `required`: boolean
 - `reasons`: list of mock policy reasons
+- `decision`: `allow`, `review_required`, or `block`
 - `riskLevel`: `low`, `medium`, or `high`
 - `thresholdAmount`: decimal string for the demo policy threshold
 
@@ -80,7 +81,7 @@ must enter `approval_required`.
 - `id`: webhook id
 - `type`: event type
 - `resourceId`: related transaction or wallet id
-- `deliveryStatus`: `queued`, `delivered`, or `failed`
+- `deliveryStatus`: `pending`, `delivered`, `failed`, or `retrying`
 - `payload`: mock event payload
 - `createdAt`: ISO timestamp
 

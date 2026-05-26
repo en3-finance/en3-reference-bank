@@ -8,7 +8,7 @@ Demo path:
 1. Keep the default amount `11000.00 USDC`.
 2. Keep the default risky mock destination ending in repeated `9` values.
 3. Submit the payment.
-4. Confirm the transaction enters `approval_required`.
+4. Confirm the transaction enters `requires_approval`.
 5. Confirm policy reasons include `amount_above_sandbox_threshold` and
    `mock_address_risk_high`.
 

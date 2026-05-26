@@ -3,14 +3,14 @@
 Target duration: 5 minutes.
 
 1. Start the demo with `pnpm dev` and open `http://localhost:5173`.
-2. Select `Maya Reference` in the customer list.
+2. Select `Maya SandBank` in the customer list.
 3. Show the active sandbox wallet, `USDC` balance, and mock deposit address.
-4. Point out the deposit timeline: detected, credited, settled.
+4. Point out the deposit timeline: submitted, simulated, settled.
 5. Submit the default outgoing payment of `11000.00 USDC` to the risky mock destination.
 6. Show the policy state: approval required because the amount is above the sandbox
    threshold and the destination has mock address risk.
 7. Click `Approve mock transaction`.
-8. Show the lifecycle states: approved, mock signed, mock broadcast, settled.
+8. Show the lifecycle states: approved, signing, signed, broadcast, settled.
 9. Open reconciliation and show the matched core account, wallet, transaction, amount, and
    audit references.
 10. Review the audit trail and webhook events.

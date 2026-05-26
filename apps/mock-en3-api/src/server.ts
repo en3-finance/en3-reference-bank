@@ -54,7 +54,7 @@ export function buildMockEn3ApiServer(initialState?: DemoState) {
     return {
       data: state,
       mock: true,
-      message: "In-memory mock state reset to reference scenario."
+      message: "In-memory mock state reset to SandBank scenario."
     };
   });
 

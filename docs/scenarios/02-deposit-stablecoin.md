@@ -7,9 +7,9 @@ Demo path:
 
 1. Show deposit address `0x2222222222222222222222222222222222222222`.
 2. Open the transaction timeline for `txn_deposit_001`.
-3. Confirm the lifecycle states: deposit detected, credited, settled.
-4. Review audit events `deposit.detected` and `wallet.balance_credited`.
-5. Review webhook `deposit.settled`.
+3. Confirm the lifecycle states: submitted, simulated, settled.
+4. Review audit events `address.created` and `audit.event_created`.
+5. Review webhook `address.created`.
 
 Boundary:
 
