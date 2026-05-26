@@ -1,0 +1,11 @@
+{
+  "name": "en3-reference-bank",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Runnable public reference bank demo for the En3 sandbox contract spine.",
+  "scripts": {
+    "start": "node src/demo.mjs",
+    "test": "node --test"
+  }
+}

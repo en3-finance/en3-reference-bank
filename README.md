@@ -25,6 +25,14 @@ This repo is for bank product teams, fintech engineers, payment operations teams
 11. A reconciliation report is updated.
 12. An audit trail records the lifecycle.
 
+## Run The Demo
+
+```bash
+npm start
+```
+
+The demo is dependency-free. It reads local mock data and prints the canonical lifecycle summary: customer -> wallet -> deposit address -> outgoing payment -> simulation -> approval -> settlement -> reconciliation -> audit trail.
+
 ## Intentionally Out Of Scope
 
 No production custody, signing, policy enforcement, ledger logic, risk logic, treasury execution, customer deployment, compliance vendor integration, private endpoint, or production infrastructure is included.

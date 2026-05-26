@@ -1,6 +1,9 @@
 {
-  "reportId": "recon_001",
+  "id": "recon_001",
+  "organizationId": "org_sandbox_001",
   "date": "2026-05-25",
+  "status": "matched",
+  "itemCount": 1,
   "items": [
     {
       "coreBankingAccountId": "account_001",
