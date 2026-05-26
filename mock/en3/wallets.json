@@ -5,6 +5,9 @@
     "asset": "USDC",
     "network": "base-sepolia",
     "depositAddress": "0x2222222222222222222222222222222222222222",
-    "status": "active"
+    "balance": "12500.00",
+    "status": "active",
+    "createdAt": "2026-05-25T11:00:00Z",
+    "mockDataNotice": "Sandbox wallet reference only; no real custody."
   }
 ]

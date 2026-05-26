@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: Reference Bank Mock Core API
+  version: 0.1.0
+  description: Mock core-banking API for public sample customers and accounts only.
+servers:
+  - url: http://localhost:4100
+    description: Local mock core banking API
+paths:
+  /health:
+    get:
+      summary: Check mock core API health
+      responses:
+        "200":
+          description: Mock core API is running
+  /customers:
+    get:
+      summary: List mock bank customers
+      responses:
+        "200":
+          description: Mock customer list
+  /customers/{userId}:
+    get:
+      summary: Get one mock bank customer
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mock customer
+        "404":
+          description: Customer not found
+  /accounts:
+    get:
+      summary: List mock bank accounts
+      responses:
+        "200":
+          description: Mock account list

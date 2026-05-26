@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: En3 Reference Bank Mock Sandbox API
+  version: 0.1.0
+  description: Mock/reference API contract for the public stablecoin wallet demo. It does not move real funds or provide real custody.
+servers:
+  - url: http://localhost:4101
+    description: Local mock En3 API
+paths:
+  /health:
+    get:
+      summary: Check mock API health
+      responses:
+        "200":
+          description: Mock API is running
+  /demo/state:
+    get:
+      summary: Return the complete mock demo state
+      responses:
+        "200":
+          description: Current mock state
+  /demo/reset:
+    post:
+      summary: Reset in-memory state to public seed data
+      responses:
+        "200":
+          description: Reset state
+  /wallets:
+    get:
+      summary: List sandbox wallets
+      responses:
+        "200":
+          description: Wallet list
+    post:
+      summary: Create or return a sandbox wallet for a mock customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId]
+              properties:
+                userId:
+                  type: string
+      responses:
+        "200":
+          description: Existing or newly created sandbox wallet
+  /transactions:
+    get:
+      summary: List mock transactions
+      responses:
+        "200":
+          description: Transaction list
+    post:
+      summary: Submit a mock outgoing stablecoin payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [walletId, amount, destinationAddress]
+              properties:
+                walletId:
+                  type: string
+                amount:
+                  type: string
+                destinationAddress:
+                  type: string
+      responses:
+        "201":
+          description: Simulated transaction with policy state
+  /transactions/{transactionId}/approve:
+    post:
+      summary: Record mock admin approval and advance lifecycle
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adminId:
+                  type: string
+      responses:
+        "200":
+          description: Approved and settled mock transaction
+  /audit-events:
+    get:
+      summary: List audit events
+      responses:
+        "200":
+          description: Audit event list
+  /webhooks:
+    get:
+      summary: List emitted mock webhook events
+      responses:
+        "200":
+          description: Webhook event list
+  /reconciliation/report:
+    get:
+      summary: Return mock reconciliation report
+      responses:
+        "200":
+          description: Current reconciliation report

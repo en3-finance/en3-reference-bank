@@ -2,13 +2,91 @@
   {
     "id": "audit_001",
     "action": "wallet.created",
+    "actor": "mock-bank-core",
+    "resourceType": "wallet",
     "resourceId": "wallet_001",
+    "summary": "Sandbox wallet created for mock bank customer.",
     "createdAt": "2026-05-25T11:00:00Z"
   },
   {
     "id": "audit_002",
-    "action": "transaction.approved",
+    "action": "deposit.detected",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_deposit_001",
+    "summary": "Mock stablecoin deposit detected.",
+    "createdAt": "2026-05-25T11:08:00Z"
+  },
+  {
+    "id": "audit_003",
+    "action": "wallet.balance_credited",
+    "actor": "mock-en3",
+    "resourceType": "wallet",
+    "resourceId": "wallet_001",
+    "summary": "Wallet credited with mock USDC deposit.",
+    "createdAt": "2026-05-25T11:08:30Z"
+  },
+  {
+    "id": "audit_004",
+    "action": "transaction.simulated",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
     "resourceId": "txn_send_001",
+    "summary": "Outgoing payment simulation completed in sandbox logic.",
+    "createdAt": "2026-05-25T12:10:03Z"
+  },
+  {
+    "id": "audit_005",
+    "action": "policy.approval_required",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Approval required for high amount and risky mock destination.",
+    "createdAt": "2026-05-25T12:10:04Z"
+  },
+  {
+    "id": "audit_006",
+    "action": "transaction.approved",
+    "actor": "admin_ref_ops",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Mock admin approval recorded.",
     "createdAt": "2026-05-25T12:15:00Z"
+  },
+  {
+    "id": "audit_007",
+    "action": "transaction.mock_signed",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Mock signing recorded; no custody operation occurred.",
+    "createdAt": "2026-05-25T12:16:00Z"
+  },
+  {
+    "id": "audit_008",
+    "action": "transaction.mock_broadcast",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Mock broadcast recorded; no real network call occurred.",
+    "createdAt": "2026-05-25T12:16:20Z"
+  },
+  {
+    "id": "audit_009",
+    "action": "transaction.settled",
+    "actor": "mock-en3",
+    "resourceType": "transaction",
+    "resourceId": "txn_send_001",
+    "summary": "Mock outgoing payment settled.",
+    "createdAt": "2026-05-25T12:17:00Z"
+  },
+  {
+    "id": "audit_010",
+    "action": "reconciliation.updated",
+    "actor": "mock-en3",
+    "resourceType": "reconciliation_report",
+    "resourceId": "recon_001",
+    "summary": "Mock reconciliation report matched bank account, wallet, and transaction.",
+    "createdAt": "2026-05-25T12:18:00Z"
   }
 ]

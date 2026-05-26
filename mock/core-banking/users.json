@@ -1,7 +1,20 @@
 [
   {
     "id": "user_001",
-    "name": "Reference Customer",
-    "status": "active"
+    "displayName": "Maya Reference",
+    "segment": "retail",
+    "country": "AE",
+    "status": "active",
+    "createdAt": "2026-05-25T09:00:00Z",
+    "mockDataNotice": "Public sample customer for En3 reference demo only."
+  },
+  {
+    "id": "user_002",
+    "displayName": "Cedar Foods Trading",
+    "segment": "sme",
+    "country": "SA",
+    "status": "active",
+    "createdAt": "2026-05-25T09:05:00Z",
+    "mockDataNotice": "Public sample customer for En3 reference demo only."
   }
 ]

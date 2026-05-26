@@ -1,0 +1,66 @@
+[
+  {
+    "id": "wh_001",
+    "type": "wallet.created",
+    "resourceId": "wallet_001",
+    "deliveryStatus": "delivered",
+    "createdAt": "2026-05-25T11:00:01Z",
+    "payload": {
+      "walletId": "wallet_001",
+      "userId": "user_001",
+      "sandbox": true
+    }
+  },
+  {
+    "id": "wh_002",
+    "type": "deposit.settled",
+    "resourceId": "txn_deposit_001",
+    "deliveryStatus": "delivered",
+    "createdAt": "2026-05-25T11:09:02Z",
+    "payload": {
+      "walletId": "wallet_001",
+      "amount": "25000.00",
+      "asset": "USDC",
+      "sandbox": true
+    }
+  },
+  {
+    "id": "wh_003",
+    "type": "transaction.approval_required",
+    "resourceId": "txn_send_001",
+    "deliveryStatus": "delivered",
+    "createdAt": "2026-05-25T12:10:05Z",
+    "payload": {
+      "transactionId": "txn_send_001",
+      "reasons": [
+        "amount_above_sandbox_threshold",
+        "mock_address_risk_high"
+      ],
+      "sandbox": true
+    }
+  },
+  {
+    "id": "wh_004",
+    "type": "transaction.settled",
+    "resourceId": "txn_send_001",
+    "deliveryStatus": "delivered",
+    "createdAt": "2026-05-25T12:17:02Z",
+    "payload": {
+      "transactionId": "txn_send_001",
+      "mockTxHash": "0xmock000000000000000000000000000000000000000000000000000000000001",
+      "sandbox": true
+    }
+  },
+  {
+    "id": "wh_005",
+    "type": "reconciliation.updated",
+    "resourceId": "recon_001",
+    "deliveryStatus": "delivered",
+    "createdAt": "2026-05-25T12:18:01Z",
+    "payload": {
+      "reportId": "recon_001",
+      "matchedItems": 1,
+      "sandbox": true
+    }
+  }
+]

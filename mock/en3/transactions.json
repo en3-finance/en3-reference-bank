@@ -5,15 +5,97 @@
     "type": "deposit",
     "asset": "USDC",
     "amount": "25000.00",
-    "status": "settled"
+    "status": "settled",
+    "source": "mock_chain_event",
+    "timeline": [
+      {
+        "state": "deposit_detected",
+        "at": "2026-05-25T11:08:00Z",
+        "summary": "Mock stablecoin deposit detected for sandbox address."
+      },
+      {
+        "state": "credited",
+        "at": "2026-05-25T11:08:30Z",
+        "summary": "Wallet balance credited in mock state."
+      },
+      {
+        "state": "settled",
+        "at": "2026-05-25T11:09:00Z",
+        "summary": "Deposit settled in the reference lifecycle."
+      }
+    ]
   },
   {
     "id": "txn_send_001",
     "walletId": "wallet_001",
-    "type": "withdrawal",
+    "type": "outgoing_payment",
     "asset": "USDC",
     "amount": "12500.00",
+    "destinationAddress": "0x9999999999999999999999999999999999999999",
+    "destinationLabel": "Mock supplier payout address",
     "status": "settled",
-    "policyResult": "approval_required"
+    "simulation": {
+      "status": "passed",
+      "estimatedNetworkFee": "0.42",
+      "result": "Mock simulation passed; no real network call was made."
+    },
+    "policy": {
+      "required": true,
+      "riskLevel": "high",
+      "thresholdAmount": "10000.00",
+      "reasons": [
+        "amount_above_sandbox_threshold",
+        "mock_address_risk_high"
+      ]
+    },
+    "approval": {
+      "status": "approved",
+      "adminId": "admin_ref_ops",
+      "approvedAt": "2026-05-25T12:15:00Z",
+      "note": "Approved in mock operations console for demo."
+    },
+    "mockExecution": {
+      "signedAt": "2026-05-25T12:16:00Z",
+      "broadcastAt": "2026-05-25T12:16:20Z",
+      "settledAt": "2026-05-25T12:17:00Z",
+      "mockTxHash": "0xmock000000000000000000000000000000000000000000000000000000000001"
+    },
+    "timeline": [
+      {
+        "state": "submitted",
+        "at": "2026-05-25T12:10:00Z",
+        "summary": "Customer submitted a mock outgoing stablecoin payment."
+      },
+      {
+        "state": "simulated",
+        "at": "2026-05-25T12:10:03Z",
+        "summary": "Transaction simulation completed in sandbox reference logic."
+      },
+      {
+        "state": "approval_required",
+        "at": "2026-05-25T12:10:04Z",
+        "summary": "Policy required admin approval for high amount and risky mock destination."
+      },
+      {
+        "state": "approved",
+        "at": "2026-05-25T12:15:00Z",
+        "summary": "Mock operations admin approved the payment."
+      },
+      {
+        "state": "mock_signed",
+        "at": "2026-05-25T12:16:00Z",
+        "summary": "Reference mock signing step recorded; no custody operation occurred."
+      },
+      {
+        "state": "mock_broadcast",
+        "at": "2026-05-25T12:16:20Z",
+        "summary": "Reference mock broadcast step recorded; no real network broadcast occurred."
+      },
+      {
+        "state": "settled",
+        "at": "2026-05-25T12:17:00Z",
+        "summary": "Outgoing payment settled in the mock lifecycle."
+      }
+    ]
   }
 ]
