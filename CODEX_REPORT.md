@@ -25,7 +25,7 @@ Status: public reference / sandbox artifact. This repository is intended to docu
 - `pnpm build`
 - `pnpm validate:forbidden`
 - `pnpm validate:secrets`
-- Deprecated public event scan for old internal event names and `mock_signed`: no runtime matches
+- Deprecated public event scan for old internal event names and legacy mock-signing tokens: no runtime matches
 
 ## Branch
 
